@@ -1,10 +1,10 @@
 from distutils.core import setup, Extension
 
-base_module = Extension('ftmsc',
-                    sources = ['ftmscmodule.c'],
+base_module = Extension(name='ftmsc.core',
+                    sources = ['ftmsc/core.c'],
                     include_dirs = ['.', './include'],
-                    library_dirs = ['./lib'],
-                    libraries = ['amr', 'amr_wb', 'msc', 'speex'])
+                    library_dirs = ['/usr/local/lib'],
+                    libraries = ['speex','amr','amr_wb','dl', 'msc', 'pthread'])
 
 setup (name = 'ftmsc',
        version = '0.1',
