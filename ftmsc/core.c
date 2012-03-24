@@ -23,10 +23,10 @@ static PyMethodDef FtmscMethods[] = {
     {NULL, NULL, 0, NULL}  
 };  
 
-PyMODINIT_FUNC initftmsc(void)
+PyMODINIT_FUNC initcore(void)
 {
     PyObject *m;
-    m = Py_InitModule("ftmsc", FtmscMethods);
+    m = Py_InitModule("ftmsc.core", FtmscMethods);
     if (m == NULL)
         return;
     FtmscError = PyErr_NewException("ftmsc.error", NULL, NULL);
