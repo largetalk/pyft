@@ -17,9 +17,24 @@ static PyObject* pyQISRInit(PyObject *self, PyObject *args)
     return Py_BuildValue("i", ret);
 }
 
+static PyObject* pyQISRSessionBegin(PyObject *self, PyObject *args)
+{
+    const char *grammarList;
+    const char *params;
+    int err_code;
+
+    const char* sessid;
+    if (!PyArg_ParseTuple(args, "ss", &init_str, &params))
+        return NULL;
+
+    sessid = QISRSessionBegin(grammarList, params, &err_code);
+    return Py_BuildValue("si", sessid, err_code);
+}
+
 
 static PyMethodDef FtmscMethods[] = {  
-    {"qisr_init", pyQISRInit, METH_VARARGS, "exec QISRInit"},  
+    {"qisrInit", pyQISRInit, METH_VARARGS, "exec QISRInit"},  
+    {"qisrSessionBegin", pyQISRSessionBegin, "exec QISRSessionBegin"},
     {NULL, NULL, 0, NULL}  
 };  
 

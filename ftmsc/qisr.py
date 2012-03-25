@@ -23,7 +23,7 @@ class IftQISR(object):
             init_str += ',coding_libs=speex.so'
 
         print 'qisr init str is %s'%init_str
-        err = core.qisr_init(init_str)
+        err = core.qisrInit(init_str)
         if err != 0:
             print 'qisr init error, error no is %s'%err
         else:
