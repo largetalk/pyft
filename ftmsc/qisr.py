@@ -1,6 +1,6 @@
 from ftmsc import core
 
-__all__ = ['IftQISR']
+__all__ = ['IftQISR', 'QISRSession']
 
 class IftQISR(object):
     def __init__(self, appid = None, timeout = None, vad_enable=0,audio_coding='speex'):
@@ -29,9 +29,32 @@ class IftQISR(object):
         else:
             self.init_flag = True
         return err
-        
 
+    def createSession(self,lazy=False,*args, **kwargs):
+        if not self.init_flag:
+            print 'init qisr first'
+            return
+        if 'grammarList' not in kwargs and 'params' not in kwargs:
+            raise QISRSessionParamException
+        return QISRSession(kwargs['grammarList'], kwargs['params'], lazy)
 
+class QISRSessionParamException(BaseException): pass
 
+class QISRSession(object):
+    def __init__(self, grammarList, params,lazy=False):
+        self.sessid = None
+        self.grammarList = grammarList
+        self.params = params
+        if not lazy:
+            self.begin()
 
-            
+    def begin(self):
+        if self.sessid:
+            return
+        sessid, err = core.qisrSessionBegin(self.grammarList, self.params)
+        if err != 0:
+            print 'qisr session begin error, error no is %s'%err
+            raise QISRSessionParamException
+        self.sessid = sessid
+        print 'qisr session begin success'
+

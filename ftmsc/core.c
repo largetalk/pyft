@@ -24,7 +24,7 @@ static PyObject* pyQISRSessionBegin(PyObject *self, PyObject *args)
     int err_code;
 
     const char* sessid;
-    if (!PyArg_ParseTuple(args, "ss", &init_str, &params))
+    if (!PyArg_ParseTuple(args, "ss", &grammarList, &params))
         return NULL;
 
     sessid = QISRSessionBegin(grammarList, params, &err_code);
@@ -34,7 +34,7 @@ static PyObject* pyQISRSessionBegin(PyObject *self, PyObject *args)
 
 static PyMethodDef FtmscMethods[] = {  
     {"qisrInit", pyQISRInit, METH_VARARGS, "exec QISRInit"},  
-    {"qisrSessionBegin", pyQISRSessionBegin, "exec QISRSessionBegin"},
+    {"qisrSessionBegin", pyQISRSessionBegin, METH_VARARGS, "exec QISRSessionBegin"},
     {NULL, NULL, 0, NULL}  
 };  
 
