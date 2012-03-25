@@ -11,7 +11,7 @@ class IftQISR(object):
         self.init_flag = False
 
     def init(self):
-        if self.appid is None:
+        if not self.appid:
             print 'appid can\'t be None'
             return
         init_str = 'appid=%s,vad_enable=%s,audio_coding=%s'%(self.appid, self.vad_enable, self.audio_coding)
