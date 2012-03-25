@@ -1,6 +1,7 @@
 #include <Python.h>
 #include <stdio.h>
 #include <string.h>
+#include <dlfcn.h>
 #include "qtts.h"
 #include "qisr.h"
 
@@ -26,11 +27,25 @@ static PyObject* pyQISRSessionBegin(PyObject *self, PyObject *args)
     const char* sessid;
     if (!PyArg_ParseTuple(args, "ss", &grammarList, &params))
         return NULL;
-
+    
     sessid = QISRSessionBegin(grammarList, params, &err_code);
     return Py_BuildValue("si", sessid, err_code);
 }
 
+static PyObject* pyGrammarActivate(PyObject *self, PyObject *args)
+{
+    const char* sessid;
+    const char* grammar;
+    const char* type;
+    int weight;
+    int ret;
+
+    if (!PyArg_ParseTuple(args, "sssi", &sessid, &grammar, &type, &weight))
+        return NULL;
+
+    ret = QISRGrammarActive(sessid, grammar, type, weight);
+    return Py_BuildValue("i", ret);
+}
 
 static PyMethodDef FtmscMethods[] = {  
     {"qisrInit", pyQISRInit, METH_VARARGS, "exec QISRInit"},  

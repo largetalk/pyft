@@ -35,7 +35,7 @@ class IftQISR(object):
             print 'init qisr first'
             return
         if 'grammarList' not in kwargs and 'params' not in kwargs:
-            raise QISRSessionParamException
+            raise QISRSessionParamException("require parameter 'grammarList' and 'params' when you init QISRSession")
         return QISRSession(kwargs['grammarList'], kwargs['params'], lazy)
 
 class QISRSessionParamException(BaseException): pass
@@ -53,8 +53,10 @@ class QISRSession(object):
             return
         sessid, err = core.qisrSessionBegin(self.grammarList, self.params)
         if err != 0:
-            print 'qisr session begin error, error no is %s'%err
-            raise QISRSessionParamException
+            raise QISRSessionParamException('qisr session begin error, error no is %s'%err)
+
         self.sessid = sessid
         print 'qisr session begin success'
+
+
 

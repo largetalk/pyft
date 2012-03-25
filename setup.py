@@ -8,7 +8,7 @@ base_module = Extension(name='ftmsc.core',
                     sources = ['ftmsc/core.c'],
                     include_dirs = ['.', './include'],
                     library_dirs = ['/usr/local/lib'],
-                    libraries = ['speex','amr','amr_wb','dl', 'msc', 'pthread'])
+                    libraries = ['speex','amr','amr_wb','msc','dl','pthread'])
 
 class my_build_ext(build_ext.build_ext):
     def initialize_options(self):
