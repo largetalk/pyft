@@ -1,6 +1,6 @@
 from ftmsc import qisr
 
-appid = "4f67ed07"#use yourself appid
+appid = ""#use yourself appid
 
 def test1():
     conn = qisr.IftQISR(appid)
@@ -11,6 +11,5 @@ def test1():
     print sess.sessid
 
 if __name__ == '__main__':
-    raw_input()
     test1()
 

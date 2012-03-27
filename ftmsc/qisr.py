@@ -18,9 +18,9 @@ class IftQISR(object):
         if self.timeout:
             init_str += ',%s'%self.timeout
         if self.audio_coding != 'speex-wb':
-            init_str += ',coding_libs=%s.so'%self.audio_coding
+            init_str += ',coding_libs=lib%s.so'%self.audio_coding
         else:
-            init_str += ',coding_libs=speex.so'
+            init_str += ',coding_libs=libspeex.so'
 
         print 'qisr init str is %s'%init_str
         err = core.qisrInit(init_str)
