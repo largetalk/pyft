@@ -43,13 +43,33 @@ static PyObject* pyGrammarActivate(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "sssi", &sessid, &grammar, &type, &weight))
         return NULL;
 
-    ret = QISRGrammarActive(sessid, grammar, type, weight);
+    ret = QISRGrammarActivate(sessid, grammar, type, weight);
     return Py_BuildValue("i", ret);
 }
+
+static PyObject* pyQISRAudioWrite(PyObject *self, PyObject *args)
+{
+    const char* sessid;
+    const char* data;
+    int dataLen;
+    int audioStatus;
+    int epStatus;
+    int recogStatus;
+
+    if (!PyArg_ParseTuple(args, "sz#i", &sessid, &data, &dataLen, &audioStatus))
+        return NULL;
+
+    int ret;
+    ret = QISRAudioWrite(sessid, data, dataLen, audioStatus, &epStatus, &recogStatus);
+    return Py_BuildValue("iii", ret, epStatus, recogStatus);
+}
+
 
 static PyMethodDef FtmscMethods[] = {  
     {"qisrInit", pyQISRInit, METH_VARARGS, "exec QISRInit"},  
     {"qisrSessionBegin", pyQISRSessionBegin, METH_VARARGS, "exec QISRSessionBegin"},
+    {"qisrGrammarActive", pyGrammarActivate, METH_VARARGS, "exec GrammarActive"},
+    {"qisrAudioWrite", pyQISRAudioWrite, METH_VARARGS, "exec AudioWrite"},
     {NULL, NULL, 0, NULL}  
 };  
 

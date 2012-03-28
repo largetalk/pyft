@@ -1,4 +1,5 @@
 from ftmsc import core
+import time
 
 __all__ = ['IftQISR', 'QISRSession']
 
@@ -45,6 +46,7 @@ class QISRSession(object):
         self.sessid = None
         self.grammarList = grammarList
         self.params = params
+        self.getResult_flag = False
         if not lazy:
             self.begin()
 
@@ -57,6 +59,31 @@ class QISRSession(object):
 
         self.sessid = sessid
         print 'qisr session begin success'
+
+    def uploadAudio(self, fileObj):
+        self.getResult_flag = False
+        if not hasattr(fileObj, 'read'):
+            raise QISRSessionParamException("uploadAudio function except file like object")
+        data = fileObj.read(1024 * 4) 
+        while data != '':
+            err, ep, recog = core.qisrAudioWrite(self.sessid, data, 2)
+            print err, ep, recog
+            if err != 0:
+                raise QISRSessionParamException('qisr upload audio error, error no is %s'%err)
+            if ep >= 3:#epStaus >=3, should cancel upload audio
+                print 'epstatus exception when upload audio, epstaus value is', ep 
+                break
+            time.sleep(2)
+            data = fileObj.read(1024 * 4)
+
+        err, ep, recog = core.qisrAudioWrite(self.sessid, '', 4)
+        if err != 0:
+            raise QISRSessionParamException('qisr upload audio error, error no is %s'%err)
+        if recog == 0:
+            self.getResult_flag = True
+        print 'qisr uploadAudio success'
+
+
 
 
 
