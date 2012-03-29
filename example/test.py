@@ -12,6 +12,7 @@ def test1():
     with open('test.wav', 'rb') as fp:
         sess.uploadAudio(fp)
     print sess.getResult()
+    del sess
     conn.fini()
 
 if __name__ == '__main__':
