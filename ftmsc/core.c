@@ -64,7 +64,6 @@ static PyObject* pyQISRAudioWrite(PyObject *self, PyObject *args)
     return Py_BuildValue("iii", ret, epStatus, recogStatus);
 }
 
-
 static PyMethodDef FtmscMethods[] = {  
     {"qisrInit", pyQISRInit, METH_VARARGS, "exec QISRInit"},  
     {"qisrSessionBegin", pyQISRSessionBegin, METH_VARARGS, "exec QISRSessionBegin"},
