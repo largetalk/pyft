@@ -40,6 +40,12 @@ class IftQISR(object):
             raise QISRSessionParamException("require parameter 'grammarList' and 'params' when you init QISRSession")
         return QISRSession(kwargs['grammarList'], kwargs['params'], lazy)
 
+    def fini(self):
+        err = core.qisrFini()
+        self.init_flag = False
+        if err != 0:
+            print 'qisr fini error, error no is %s'%err
+
 class QISRSessionParamException(BaseException): pass
 
 class QISRSession(object):
@@ -50,6 +56,12 @@ class QISRSession(object):
         self.getResult_flag = False
         if not lazy:
             self.begin()
+
+    def __del__(self):
+        if self.sessid:
+            err = core.qisrSessionEnd(self.sessid, "normal end")
+            if err != 0:
+                print "session end error, sessid is %s and error no is %s"%(self.sessid, err)
 
     def begin(self):
         if self.sessid:
@@ -105,4 +117,5 @@ class QISRSession(object):
             time.sleep(2)
 
         return safe_decode(resultData)
+
 

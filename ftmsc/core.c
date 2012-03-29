@@ -80,12 +80,34 @@ static PyObject* pyQISRGetResult(PyObject *self, PyObject *args)
     return Py_BuildValue("iiz", err, rsltStatus, strResult);
 }
 
+static PyObject* pyQISRSessionEnd(PyObject *self, PyObject *args)
+{
+    const char* sessid;
+    const char* hints;
+
+    int ret;
+    if (!PyArg_ParseTuple(args, "ss", &sessid, &hints))
+        return NULL;
+
+    ret = QISRSessionEnd(sessid, hints);
+    return Py_BuildValue("i", ret);
+}
+
+static PyObject* pyQISRFini(PyObject *self, PyObject *args)
+{
+    int ret;
+    ret = QISRFini();
+    return Py_BuildValue("i", ret);
+}
+
 static PyMethodDef FtmscMethods[] = {  
     {"qisrInit", pyQISRInit, METH_VARARGS, "exec QISRInit"},  
     {"qisrSessionBegin", pyQISRSessionBegin, METH_VARARGS, "exec QISRSessionBegin"},
     {"qisrGrammarActive", pyGrammarActivate, METH_VARARGS, "exec GrammarActive"},
     {"qisrAudioWrite", pyQISRAudioWrite, METH_VARARGS, "exec AudioWrite"},
     {"qisrGetResult", pyQISRGetResult, METH_VARARGS, "exec GetResult"},
+    {"qisrSessionEnd", pyQISRSessionEnd, METH_VARARGS, "exec SessionEnd"},
+    {"qisrFini", pyQISRFini, METH_VARARGS, "exec QISRFini"},
     {NULL, NULL, 0, NULL}  
 };  
 
