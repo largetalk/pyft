@@ -1,5 +1,6 @@
 from ftmsc import core
 import time
+from utils import safe_decode
 
 __all__ = ['IftQISR', 'QISRSession']
 
@@ -91,15 +92,17 @@ class QISRSession(object):
         resultData = ''
         while True:
             err, rsltStaus, rsltStr = core.qisrGetResult(self.sessid, waitTime)
+            print err, rsltStaus
             if err != 0: # get result err
                 print "qisr get result error, error no is %s"%err
                 return resultData
             if rsltStaus == 1:
-                print 'get result nomathc'
-            elif rsltStaus == 5:
+                print 'get result nomatch'
+            if rsltStr:
                 resultData += rsltStr
+            if rsltStaus == 5:
                 break
-            else:
-                resultData += rsltStr
-        return resultData
+            time.sleep(2)
+
+        return safe_decode(resultData)
 
