@@ -64,11 +64,28 @@ static PyObject* pyQISRAudioWrite(PyObject *self, PyObject *args)
     return Py_BuildValue("iii", ret, epStatus, recogStatus);
 }
 
+static PyObject* pyQISRGetResult(PyObject *self, PyObject *args)
+{
+    const char* sessid;
+    int rsltStatus;
+    int waitTime;
+    int err;
+
+    const char* strResult;
+
+    if (!PyArg_ParseTuple(args, "si", &sessid, &waitTime))
+        return NULL;
+
+    strResult = QISRGetResult(sessid, &rsltStatus, waitTime, &err);
+    return Py_BuildValue("iiz", err, rsltStatus, strResult);
+}
+
 static PyMethodDef FtmscMethods[] = {  
     {"qisrInit", pyQISRInit, METH_VARARGS, "exec QISRInit"},  
     {"qisrSessionBegin", pyQISRSessionBegin, METH_VARARGS, "exec QISRSessionBegin"},
     {"qisrGrammarActive", pyGrammarActivate, METH_VARARGS, "exec GrammarActive"},
     {"qisrAudioWrite", pyQISRAudioWrite, METH_VARARGS, "exec AudioWrite"},
+    {"qisrGetResult", pyQISRGetResult, METH_VARARGS, "exec GetResult"},
     {NULL, NULL, 0, NULL}  
 };  
 

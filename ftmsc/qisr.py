@@ -83,6 +83,23 @@ class QISRSession(object):
             self.getResult_flag = True
         print 'qisr uploadAudio success'
 
+    def getResult(self, waitTime=5000):
+        if not self.getResult_flag:
+            print 'upload audio first'
+            return None
 
-
+        resultData = ''
+        while True:
+            err, rsltStaus, rsltStr = core.qisrGetResult(self.sessid, waitTime)
+            if err != 0: # get result err
+                print "qisr get result error, error no is %s"%err
+                return resultData
+            if rsltStaus == 1:
+                print 'get result nomathc'
+            elif rsltStaus == 5:
+                resultData += rsltStr
+                break
+            else:
+                resultData += rsltStr
+        return resultData
 
