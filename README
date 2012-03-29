@@ -1,4 +1,20 @@
 flytek msc linux sdk python wrap
 
-because of copy right issue, can't add xunfei msc dynamic library to lib/ dir, so you should download it yourself and copy it to lib/ dir, download site is http://dev.voicecloud.cn/download.php
+usage:
 
+1. download xunfei linux sdk and put dynamic library *so file to /usr/local/lib
+
+xunfei linux sdk download url is http://dev.voicecloud.cn/download.php
+
+2. link *so file
+
+if you python bin path is /usr/bin/python, make link
+else you should link those *so file yourself
+
+3. install
+
+sudo python setup.py install
+
+4. test
+
+python example/test.py
