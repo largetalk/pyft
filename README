@@ -13,6 +13,7 @@ else you should link those *so file yourself
 
 3. install
 
+python setup.py build
 sudo python setup.py install
 
 4. test
